@@ -6,5 +6,5 @@ urlpatterns= [
     path('home/', views.home),
     path('make/', views.make),
     path('new/', views.new, name='new'),
-    path('<room_id>/', views.room),
+    path('<encrypt>/', views.room),
 ]

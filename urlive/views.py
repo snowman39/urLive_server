@@ -11,11 +11,12 @@ def make(request): #make new room and enter
         room_name = request.POST['name']
         nickname = request.POST['nickname']
         pincode = uuid.uuid4().hex[:6]
-
+        encrypt = uuid.uuid4().hex[:20]
         #방 이름, 초대코드를 넣어서 방 처음 생성 
         newRoom= Room.objects.create(
             name=room_name,
             pincode= pincode,
+            encrypt= encrypt,
         ) 
 
         #받은 닉네임으로 방장 생성
@@ -30,15 +31,20 @@ def make(request): #make new room and enter
         context = {}
         context['pincode'] = pincode
         context['creator'] = creator
-        
-        return HttpResponseRedirect('/{}/'.format(newRoom.id))
+        print(context)
+        return HttpResponseRedirect('/{}/'.format(newRoom.encrypt))
     else: 
         return HttpResponseNotAllowed(['POST'])
 
-def room(request, room_id):
+def room(request, encrypt):
     if request.method == 'GET':
+        room= Room.objects.get(encrypt= encrypt)
+        users= User.objects.filter(room= room.id)
         context = {}
-        context['room_id'] = room_id
+        context['room_id'] = room.id
+        context['room']=room
+        context['users']=users
+        print(context)
         return render(request, 'urlive/room.html', context)
     elif request.method == 'POST':
         nickname = request.POST.get('nickname')
@@ -47,7 +53,7 @@ def room(request, room_id):
 
         if room is not None:
             newUser = User.objects.create(nickname= nickname,room= room)
-            return HttpResponseRedirect('/{}/'.format(room.id)) 
+            return HttpResponseRedirect('/{}/'.format(room.encrypt)) 
         else: 
             return HttpResponse(status = 400)
     else:
