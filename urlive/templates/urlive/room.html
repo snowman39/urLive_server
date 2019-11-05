@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+    </head>
+    <body>
+        <div id="roomName"> <!--방 이름-->
+            <h1>방 이름: </h1>
+            {{ room.name }}
+        </div>
+        
+        <div id="roomPincode"> <!--방 초대코드-->
+            <h1>초대코드: </h1>
+            {{ room.pincode }}
+        </div>
+        
+        <div id="users">
+            <h1>구성원: </h1>
+            {% for user in users %}
+                {{ user.nickname }},
+            {% endfor %}
+        </div>
+        
+
+    </body>
+
+
+
+</html>
