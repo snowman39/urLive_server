@@ -8,4 +8,5 @@ class Room(models.Model):
 class User(models.Model):
 	nickname= models.CharField(max_length=5, default='null')
 	room = models.ForeignKey(Room, on_delete=models.CASCADE)
+	uid = models.TextField()
 
