@@ -7,4 +7,5 @@ urlpatterns= [
     path('room/', views.room),
     path('<encrypt>/', views.room),
     path('list/<uid>/', views.list),
+    path('memo/<encrypt>/', views.memo),
 ]
