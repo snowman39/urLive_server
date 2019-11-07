@@ -203,3 +203,15 @@ def memo(request, encrypt):
 
     else:
         return HttpResponse(status=400)
+
+
+def delete(request, uid, encrypt):
+    if request.method == 'POST':
+        room=Room.objects.get(encrypt=encrypt)
+        me = User.objects.filter(uid = uid).get(room= room)
+        print(me)
+        me.delete()
+        return HttpResponse(status=200, content=context)
+
+    else:
+        return HttpResponse(status=400)
