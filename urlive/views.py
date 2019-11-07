@@ -120,7 +120,6 @@ def room(request, encrypt):
         context = {}
         context['room_name'] = room.name
         context['pincode']=room.pincode
-
         context['users_uid']=uid_str
         context['encrypt']=room.encrypt
         context['users_str']=user_str
