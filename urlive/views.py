@@ -60,8 +60,9 @@ def enter(request):
         #     pre_room.is_selected = False
 
         room = Room.objects.get(pincode= pincode)
-
-        if room is not None:
+        user = User.objects.get(uid = uid)
+        
+        if room is not None and user is None:
             newUser = User.objects.create(
                 nickname= nickname,
                 room= room,
