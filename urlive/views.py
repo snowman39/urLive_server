@@ -102,19 +102,33 @@ def room(request, encrypt):
             print(user.uid)
             uid_str += user.uid + '/'
         
-        memo_str =''
+        memo_url =''
+        memo_content=''
+        memo_author=''
+
         for memo in memos:
-            memo_str += memo.url + '/'
-        print(memo_str)
+            memo_url += memo.url + '[partition]'
+            memo_content += memo.content + '/'
+            memo_author += memo.author + '/'
+
+        print(memo_url)
+        print(memo_content)
+        print(memo_author)
+
+        
 
         context = {}
         context['room_name'] = room.name
         context['pincode']=room.pincode
-        # context['is_selected']=room.is_selected
+
         context['users_uid']=uid_str
         context['encrypt']=room.encrypt
         context['users_str']=user_str
-        context['memo_str']= memo_str
+
+        context['memo_url']= memo_url
+        context['memo_content']= memo_content
+        context['memo_author']= memo_author
+
 
         context = json.dumps(context)
         return HttpResponse(status=200, content=context)
