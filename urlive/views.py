@@ -72,7 +72,7 @@ def enter(request):
 
             context = {}
             context['room_name'] = room.name
-            context['pincode'] = pincode
+            context['pincode'] = room.pincode
             context['nickname'] = newUser.nickname
             context['uid'] = newUser.uid
             context['encrypt'] = room.encrypt
@@ -91,8 +91,8 @@ def room(request, encrypt):
     if request.method == 'GET':
 
         room= Room.objects.get(encrypt=encrypt)
-        users= User.objects.filter(room= room.id)
-        memos= Memo.objects.filter(room= room.id) 
+        users= User.objects.filter(room= room)
+        memos= Memo.objects.filter(room= room) 
 
         user_str = ''
         for user in users:
