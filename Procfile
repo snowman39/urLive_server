@@ -1,1 +1,1 @@
-web: gunicorn urLive_server.wsgi --log-file -
+web: gunicorn urlive.wsgi --log-file -
