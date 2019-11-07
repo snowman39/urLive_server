@@ -63,6 +63,7 @@ def enter(request):
         # room = Room.objects.all().filter(pincode= pincode)[0]
         # room = Room.objects.all().filter(pincode= pincode).latest()
         user = User.objects.get(uid = uid)
+        
 
         if room is not None and user is None:
             newUser = User.objects.create(
