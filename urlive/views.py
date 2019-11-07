@@ -59,7 +59,7 @@ def enter(request):
         # for room in pre_room:
         #     pre_room.is_selected = False
 
-        room = Room.objects.get(pincode= pincode)
+        room = Room.objects.filter(pincode= pincode)[0]
         user = User.objects.get(uid = uid)
 
         if room is not None and user is None:
