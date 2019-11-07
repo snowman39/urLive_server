@@ -1,11 +1,12 @@
 from django.shortcuts import render
 import uuid
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseRedirect
-from .models import Room, User
+from .models import Room, User, Memo
 import json
     
 def make(request): #make new room and enter
     if request.method == 'POST':
+
         req_data = json.loads(request.body.decode())
         room_name = req_data['name']
         nickname = req_data['nickname']
@@ -41,7 +42,6 @@ def make(request): #make new room and enter
         context['nickname'] = creator.nickname
         context['uid'] = creator.uid
         context['encrypt'] = newRoom.encrypt
-        print(context)
         context = json.dumps(context)
         return HttpResponse(status=200, content=context)
         # return HttpResponseRedirect('/{}/'.format(newRoom.encrypt))
@@ -88,9 +88,11 @@ def enter(request):
 
 def room(request, encrypt):
     if request.method == 'GET':
+
         room= Room.objects.get(encrypt=encrypt)
         users= User.objects.filter(room= room.id)
-        
+        memos= Memo.objects.filter(room= room.id) 
+
         user_str = ''
         for user in users:
             user_str += user.nickname + '/'
@@ -100,15 +102,34 @@ def room(request, encrypt):
             print(user.uid)
             uid_str += user.uid + '/'
         
+        memo_url =''
+        memo_content=''
+        memo_author=''
+
+        for memo in memos:
+            memo_url += memo.url + '[partition]'
+            memo_content += memo.content + '/'
+            memo_author += memo.author + '/'
+
+        print(memo_url)
+        print(memo_content)
+        print(memo_author)
+
+        
+
         context = {}
         context['room_name'] = room.name
         context['pincode']=room.pincode
-        # context['is_selected']=room.is_selected
         context['users_uid']=uid_str
         context['encrypt']=room.encrypt
         context['users_str']=user_str
+
+        context['memo_url']= memo_url
+        context['memo_content']= memo_content
+        context['memo_author']= memo_author
+
+
         context = json.dumps(context)
-        print(context)
         return HttpResponse(status=200, content=context)
 
     else:
@@ -116,9 +137,7 @@ def room(request, encrypt):
 	
 def list(request, uid):
     if request.method == 'GET':
-        print(uid)
         me = User.objects.filter(uid = uid) #다양한 방에 속한 나들 [별명1, 별명2,,,,]
-        print(me)
         room_name_arr=''
         room_url_arr=''
         room_participant=''
@@ -144,6 +163,42 @@ def list(request, uid):
         context['room_part_arr']=room_participant
         context = json.dumps(context)
         print(context)
+        return HttpResponse(status=200, content=context)
+
+    else:
+        return HttpResponse(status=400)
+
+
+
+
+def memo(request, encrypt):
+    if request.method == 'POST':
+        req_data = json.loads(request.body.decode())
+
+        url = req_data['url']
+        content = req_data['content']
+        uid = req_data['uid']
+        room = Room.objects.get(encrypt = encrypt)
+        author= User.objects.filter(uid= uid).get(room_id= room.id)
+        
+        if room is not None:
+            newMemo = Memo.objects.create(
+                url = url,
+	            content= content,
+	            room = room,
+	            author = author.nickname
+            )
+
+        newMemo.save()
+
+        context = {}
+        context['url'] = newMemo.url
+        context['content'] = newMemo.content
+        context['room'] = newMemo.room.name
+        context['author'] = newMemo.author
+        print(context)
+        context = json.dumps(context)
+
         return HttpResponse(status=200, content=context)
 
     else:
