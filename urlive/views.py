@@ -38,7 +38,7 @@ def make(request): #make new room and enter
 
         context = {}
         context['room_name'] = newRoom.name
-        context['pincode'] = pincode
+        context['pincode'] = newRoom.pincode
         context['nickname'] = creator.nickname
         context['uid'] = creator.uid
         context['encrypt'] = newRoom.encrypt
@@ -61,7 +61,7 @@ def enter(request):
 
         room = Room.objects.get(pincode= pincode)
         user = User.objects.get(uid = uid)
-        
+
         if room is not None and user is None:
             newUser = User.objects.create(
                 nickname= nickname,
