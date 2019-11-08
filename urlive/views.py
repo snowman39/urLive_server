@@ -82,7 +82,7 @@ def enter(request):
 
             # return HttpResponseRedirect('/{}/'.format(room.encrypt)) 
 
-        else: #그런 room이 없으면??? 
+        else if room is not None and user is not None: #그런 room이 없으면??? 
 
             context = {}
             context['room_name'] = room.name
@@ -95,6 +95,10 @@ def enter(request):
             print(context)
             context = json.dumps(context)
             return HttpResponse(status=200, content=context)
+
+        else:
+            return HttpResponse(status=400)
+
     else:
         return HttpResponse(status=400)
 
@@ -102,7 +106,7 @@ def room(request, encrypt):
     if request.method == 'GET':
 
         room= Room.objects.get(encrypt=encrypt)
-        
+
         users= User.objects.filter(room= room)
         memos= Memo.objects.filter(room= room) 
         urls = Url.objects.filter(room= room)
