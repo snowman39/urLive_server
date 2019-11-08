@@ -57,10 +57,10 @@ def enter(request):
         uid = req_data['uid']
         room= Room.objects.get(pincode=pincode)
         
-        # user = User.objects.get(uid = uid)
+        user = User.objects.filter(uid = uid).get(room = room)
 
         # if room is not None and user is None:
-        if room is not None:
+        if room is not None and user is None:
             newUser = User.objects.create(
                 nickname= nickname,
                 room= room,
@@ -82,8 +82,9 @@ def enter(request):
             # return HttpResponseRedirect('/{}/'.format(room.encrypt)) 
 
         else: #그런 room이 없으면??? 
-
-            return HttpResponse(status = 400)
+            context = {}
+            context ['encrypt']= 'none'
+            return HttpResponse(status = 400, content= context)
     else:
         return HttpResponse(status=400)
 

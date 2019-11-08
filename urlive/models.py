@@ -16,4 +16,5 @@ class Memo(models.Model):
 	room = models.ForeignKey(Room, on_delete=models.CASCADE)
 	author = models.CharField(max_length=5, default='null')
 	
-
+class Url(models.Model):
+	url = models.TextField()
