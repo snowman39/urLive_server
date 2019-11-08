@@ -132,7 +132,7 @@ def room(request, encrypt):
         shared_list= ''
 
         for u in urls:
-            shared_list += u.url + '/'
+            shared_list += u.url + '[partition]'
 
 
 
