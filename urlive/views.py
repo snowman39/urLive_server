@@ -74,7 +74,7 @@ def enter(request):
             context['nickname'] = newUser.nickname
             context['uid'] = newUser.uid
             context['encrypt'] = room.encrypt
-            context['exist'] = False
+            # context['exist'] = False
             
             print(context)
             context = json.dumps(context)
