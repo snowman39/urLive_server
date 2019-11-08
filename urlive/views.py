@@ -102,9 +102,10 @@ def room(request, encrypt):
     if request.method == 'GET':
 
         room= Room.objects.get(encrypt=encrypt)
+        
         users= User.objects.filter(room= room)
         memos= Memo.objects.filter(room= room) 
-        urls = Url.objects.filter(room=Room)
+        urls = Url.objects.filter(room= room)
 
         user_str = ''
         for user in users:
@@ -125,6 +126,7 @@ def room(request, encrypt):
             memo_author += memo.author + '/'
 
         shared_list= ''
+
         for u in urls:
             shared_list += u.url + '/'
 
