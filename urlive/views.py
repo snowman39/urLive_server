@@ -74,6 +74,7 @@ def enter(request):
             context['nickname'] = newUser.nickname
             context['uid'] = newUser.uid
             context['encrypt'] = room.encrypt
+            context['exist'] = False
             
             print(context)
             context = json.dumps(context)
@@ -81,8 +82,19 @@ def enter(request):
 
             # return HttpResponseRedirect('/{}/'.format(room.encrypt)) 
 
-        else:  
-            return HttpResponse(status = 400)
+        else: #그런 room이 없으면??? 
+
+            context = {}
+            context['room_name'] = room.name
+            context['pincode'] = room.pincode
+            context['nickname'] = user.nickname
+            context['uid'] = user.uid
+            context['encrypt'] = room.encrypt
+            context['exist'] = True
+
+            print(context)
+            context = json.dumps(context)
+            return HttpResponse(status=200, content=context)
     else:
         return HttpResponse(status=400)
 
