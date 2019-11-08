@@ -82,7 +82,7 @@ def enter(request):
 
             # return HttpResponseRedirect('/{}/'.format(room.encrypt)) 
 
-        else if room is not None and user is not None: #그런 room이 없으면??? 
+        elif room is not None and user is not None: #그런 room이 없으면??? 
 
             context = {}
             context['room_name'] = room.name
