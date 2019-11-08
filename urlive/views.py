@@ -58,10 +58,11 @@ def enter(request):
         # pre_room = Room.objects.filter(is_selected = True)
         # for room in pre_room:
         #     pre_room.is_selected = False
-
+        # roomarray = Room.objects.all()
+        # print(roomarray)
         room = Room.objects.get(pincode= pincode)
-        user = User.objects.get(uid = uid)
-        
+        user = User.objects.filter(uid = uid).get(room=  room)
+        # room is not None 꼭 필요한가?
         if room is not None and user is None:
             newUser = User.objects.create(
                 nickname= nickname,
