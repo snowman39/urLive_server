@@ -80,7 +80,9 @@ def enter(request):
             return HttpResponse(status=200, content=context)
 
             # return HttpResponseRedirect('/{}/'.format(room.encrypt)) 
-        else: 
+
+        else: #그런 room이 없으면??? 
+
             return HttpResponse(status = 400)
     else:
         return HttpResponse(status=400)
