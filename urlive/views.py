@@ -51,21 +51,16 @@ def make(request): #make new room and enter
 def enter(request):
     if request.method == 'POST':
         req_data = json.loads(request.body.decode())
+        
         pincode = req_data['pincode']
         nickname = req_data['nickname']
         uid = req_data['uid']
-       
-        # pre_room = Room.objects.filter(is_selected = True)
-        # for room in pre_room:
-        #     pre_room.is_selected = False
-
         room= Room.objects.get(pincode=pincode)
-        # room = Room.objects.all().filter(pincode= pincode)[0]
-        # room = Room.objects.all().filter(pincode= pincode).latest()
-        user = User.objects.get(uid = uid)
         
+        # user = User.objects.get(uid = uid)
 
-        if room is not None and user is None:
+        # if room is not None and user is None:
+        if room is not None:
             newUser = User.objects.create(
                 nickname= nickname,
                 room= room,
