@@ -18,3 +18,6 @@ class Memo(models.Model):
 	
 class Url(models.Model):
 	url = models.TextField()
+	room = models.ForeignKey(Room, on_delete=models.CASCADE)
+	user= models.TextField() #uid 
+

@@ -9,4 +9,5 @@ urlpatterns= [
     path('list/<uid>/', views.list),
     path('memo/<encrypt>/', views.memo),
     path('delete/<uid>/<encrypt>/', views.delete),
+    path('share/<encrypt>/', views.share),
 ]

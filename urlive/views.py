@@ -81,10 +81,8 @@ def enter(request):
 
             # return HttpResponseRedirect('/{}/'.format(room.encrypt)) 
 
-        else: #그런 room이 없으면??? 
-            context = {}
-            context ['encrypt']= 'none'
-            return HttpResponse(status = 400, content= context)
+        else:  
+            return HttpResponse(status = 400)
     else:
         return HttpResponse(status=400)
 
@@ -94,6 +92,7 @@ def room(request, encrypt):
         room= Room.objects.get(encrypt=encrypt)
         users= User.objects.filter(room= room)
         memos= Memo.objects.filter(room= room) 
+        urls = Url.objects.filter(room=Room)
 
         user_str = ''
         for user in users:
@@ -113,11 +112,11 @@ def room(request, encrypt):
             memo_content += memo.content + '/'
             memo_author += memo.author + '/'
 
-        print(memo_url)
-        print(memo_content)
-        print(memo_author)
+        shared_list= ''
+        for u in urls:
+            shared_list += u.url + '/'
 
-        
+
 
         context = {}
         context['room_name'] = room.name
@@ -129,7 +128,7 @@ def room(request, encrypt):
         context['memo_url']= memo_url
         context['memo_content']= memo_content
         context['memo_author']= memo_author
-
+        context['shared_list'] = shared_list
 
         context = json.dumps(context)
         return HttpResponse(status=200, content=context)
@@ -217,3 +216,40 @@ def delete(request, uid, encrypt):
 
     else:
         return HttpResponse(status=400)
+
+def share(request, encrypt):
+    if request.method == 'POST':
+
+        req_data = json.loads(request.body.decode())
+        url = req_data['url']
+        uid = req_data['uid']
+        room=Room.objects.get(encrypt=encrypt)
+
+        if room is not None:
+
+            newShare = Url.objects.create(
+                url= url,
+                room=room,
+                user= uid
+            )
+
+            context = {}
+
+            context['shared_url'] = newShare.url
+            context['shared_room']= newShare.room
+            context['sender']= uid_str
+            context = json.dumps(context)
+            print(context)
+            return HttpResponse(status=200, content=context)
+        else:
+            return HttpResponse(status=400)
+
+    else:
+        return HttpResponse(status=400)
+
+
+
+
+
+
+
