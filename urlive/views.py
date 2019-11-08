@@ -1,7 +1,7 @@
 from django.shortcuts import render
 import uuid
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseRedirect
-from .models import Room, User, Memo
+from .models import Room, User, Memo, Url
 import json
     
 def make(request): #make new room and enter
