@@ -57,10 +57,10 @@ def enter(request):
         uid = req_data['uid']
         room= Room.objects.get(pincode=pincode)
         
-        user = User.objects.filter(uid = uid).get(room = room)
+        user = User.objects.filter(uid = uid).filter(room = room).exists()
 
         # if room is not None and user is None:
-        if room is not None and user is None:
+        if room is not None and not user:
             newUser = User.objects.create(
                 nickname= nickname,
                 room= room,
