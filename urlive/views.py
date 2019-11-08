@@ -55,15 +55,11 @@ def enter(request):
         pincode = req_data['pincode']
         nickname = req_data['nickname']
         uid = req_data['uid']
-       
-        # pre_room = Room.objects.filter(is_selected = True)
-        # for room in pre_room:
-        #     pre_room.is_selected = False
-        # roomarray = Room.objects.all()
-        # print(roomarray)
-        room = Room.objects.get(pincode= pincode)
-        user = User.objects.filter(uid = uid).get(room=  room)
-        # room is not None 꼭 필요한가?
+        room= Room.objects.get(pincode=pincode)
+        
+        user = User.objects.filter(uid = uid).get(room = room)
+
+        # if room is not None and user is None:
         if room is not None and user is None:
             newUser = User.objects.create(
                 nickname= nickname,
