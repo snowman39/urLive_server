@@ -78,8 +78,6 @@ def enter(request):
             print(context)
             context = json.dumps(context)
             return HttpResponse(status=200, content=context)
-
-
         
 
         else:
@@ -237,14 +235,14 @@ def share(request, encrypt):
                 user= uid
             )
 
-            context = {}
+            # context = {}
 
-            context['shared_url'] = newShare.url
-            context['shared_room']= newShare.room
-            context['sender']= uid_str
-            context = json.dumps(context)
-            print(context)
-            return HttpResponse(status=200, content=context)
+            # context['shared_url'] = newShare.url
+            # context['shared_room']= newShare.room
+            # context['sender']= uid_str
+            # context = json.dumps(context)
+            # print(context)
+            return HttpResponse(status=200)
         else:
             return HttpResponse(status=400)
 
@@ -257,7 +255,7 @@ def share(request, encrypt):
         room = Room.objects.get(encrypt=encrypt)
         tabbed_url = Url.objects.filter(room=room).get(url= url)
         tabbed_url.delete()
-        
+
         return HttpResponse(status=200)
 
     else:
