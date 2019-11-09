@@ -114,10 +114,13 @@ def room(request, encrypt):
             memo_author += memo.author + '/'
 
         shared_list= ''
-
+        sender = ''
         for u in urls:
             shared_list += u.url + '[partition]'
+            sender += u.user + '/'
 
+        
+        
 
 
         context = {}
@@ -131,6 +134,9 @@ def room(request, encrypt):
         context['memo_content']= memo_content
         context['memo_author']= memo_author
         context['shared_list'] = shared_list
+        context['sender']= sender
+        
+
 
         context = json.dumps(context)
         return HttpResponse(status=200, content=context)
@@ -225,7 +231,7 @@ def share(request, encrypt):
         req_data = json.loads(request.body.decode())
         url = req_data['url']
         uid = req_data['uid']
-        room=Room.objects.get(encrypt=encrypt)
+        room= Room.objects.get(encrypt=encrypt)
 
         if room is not None:
 
@@ -235,10 +241,10 @@ def share(request, encrypt):
                 user= uid
             )
 
-            context = {}
-            context['sender']= uid
-            context = json.dumps(context)
-            print(context)
+            # context = {}
+            # context['sender']= uid
+            # context = json.dumps(context)
+            # print(context)
             return HttpResponse(status=200)
         else:
             return HttpResponse(status=400)
