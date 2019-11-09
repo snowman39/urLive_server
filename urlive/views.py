@@ -236,7 +236,7 @@ def share(request, encrypt):
             )
 
             context = {}
-            context['sender']= uid_str
+            context['sender']= uid
             context = json.dumps(context)
             print(context)
             return HttpResponse(status=200)
