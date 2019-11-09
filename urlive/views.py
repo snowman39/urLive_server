@@ -74,27 +74,13 @@ def enter(request):
             context['nickname'] = newUser.nickname
             context['uid'] = newUser.uid
             context['encrypt'] = room.encrypt
-            # context['exist'] = False
             
             print(context)
             context = json.dumps(context)
             return HttpResponse(status=200, content=context)
 
-            # return HttpResponseRedirect('/{}/'.format(room.encrypt)) 
 
-        # elif room is not None and user is not None: #그런 room이 없으면??? 
-
-        #     context = {}
-        #     context['room_name'] = room.name
-        #     context['pincode'] = room.pincode
-        #     context['nickname'] = user.nickname
-        #     context['uid'] = user.uid
-        #     context['encrypt'] = room.encrypt
-        #     context['exist'] = True
-
-        #     print(context)
-        #     context = json.dumps(context)
-        #     return HttpResponse(status=200, content=context)
+        
 
         else:
             return HttpResponse(status=400)
@@ -261,6 +247,18 @@ def share(request, encrypt):
             return HttpResponse(status=200, content=context)
         else:
             return HttpResponse(status=400)
+
+    elif request.method =='PUT':
+
+        req_data = json.loads(request.body.decode())
+
+        url = req_data['url']
+
+        room = Room.objects.get(encrypt=encrypt)
+        tabbed_url = Url.objects.filter(room=room).get(url= url)
+        tabbed_url.delete()
+        
+        return HttpResponse(status=200)
 
     else:
         return HttpResponse(status=400)
