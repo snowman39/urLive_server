@@ -235,13 +235,10 @@ def share(request, encrypt):
                 user= uid
             )
 
-            # context = {}
-
-            # context['shared_url'] = newShare.url
-            # context['shared_room']= newShare.room
-            # context['sender']= uid_str
-            # context = json.dumps(context)
-            # print(context)
+            context = {}
+            context['sender']= uid_str
+            context = json.dumps(context)
+            print(context)
             return HttpResponse(status=200)
         else:
             return HttpResponse(status=400)
